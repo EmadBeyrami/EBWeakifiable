@@ -1,3 +1,4 @@
+// MARK: - Source: https://github.com/EmadBeyrami/EBWeakifiable
 /*
  Callbacks are a part of almost all iOS apps, and as frameworks
  such as `RxSwift` keep gaining in popularity, they become ever
