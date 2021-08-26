@@ -22,21 +22,99 @@ import Foundation
 protocol EBWeakifiable: class { }
 
 extension EBWeakifiable {
+    
+    // MARK: type 1
+    /// Simple solution for tiring [weak self] in swift
+    ///
+    ///      producer.register { [weak self] in
+    ///          guard let self = self else { return }
+    ///          self.runJob()
+    ///      }
+    ///
+    /// Simply after each closure add weakify like sample below:
+    ///
+    ///      producer.register(handler: weakify { strongSelf in
+    ///          strongSelf.runJob()
+    ///      })
+    ///
+    /// ENJOY ❤️
+    ///
     func weakify(_ code: @escaping (Self) -> Void) -> () -> Void {
         return { [weak self] in
             guard let self = self else { return }
-            
             code(self)
         }
     }
     
-    func weakify<T>(_ code: @escaping (T, Self) -> Void) -> (T) -> Void {
-        return { [weak self] arg in
-            guard let self = self else { return }
-            
-            code(arg, self)
+    // MARK: type 2
+    /// Simple solution for tiring [weak self] in swift
+    ///
+    ///      producer.register { [weak self] in
+    ///          guard let self = self else { return }
+    ///          return self.signout()
+    ///      }
+    ///
+    /// Simply after each closure add weakify like sample below:
+    ///
+    ///      producer.register(handler: weakify { strongSelf in
+    ///          return strongSelf.signout()
+    ///      })
+    ///
+    /// ENJOY ❤️
+    ///
+    func weakify<Z>(_ code: @escaping (Self) -> Z) -> () -> Z? {
+        return { [weak self] in
+            guard let self = self else { return nil }
+            return code(self)
         }
     }
+    
+    // MARK: type 3
+    /// Simple solution for tiring [weak self] in swift
+    ///
+    ///      producer.register { [weak self] result in
+    ///          guard let self = self else { return }
+    ///          self.handle(result)
+    ///      }
+    ///
+    /// Simply after each closure add weakify like sample below:
+    ///
+    ///      producer.register(handler: weakify { strongSelf, result in
+    ///          strongSelf.handle(result)
+    ///      })
+    ///
+    /// ENJOY ❤️
+    ///
+    func weakify<T>(_ code: @escaping (Self, T) -> Void) -> (T) -> Void {
+        return { [weak self] data in
+            guard let self = self else { return }
+            code(self, data)
+        }
+    }
+    
+    // MARK: type 4
+    /// Simple solution for tiring [weak self] in swift
+    ///
+    ///      producer.register { [weak self] number in
+    ///          guard let self = self else { return }
+    ///          self.login(number)
+    ///      }
+    ///
+    /// Simply after each closure add weakify like sample below:
+    ///
+    ///      producer.register(handler: weakify { (strongSelf, number) -> Bool in
+    ///          strongSelf.login(number)
+    ///      })
+    ///
+    /// ENJOY ❤️
+    ///
+    func weakify<T, Z>(_ code: @escaping (Self, T) -> Z) -> (T) -> Z? {
+        return { [weak self] data in
+            guard let self = self else { return nil }
+            return code(self, data)
+        }
+    }
+    
 }
 
 extension NSObject: EBWeakifiable { }
