@@ -2,10 +2,10 @@
 A simple solution for tiring [weak self] in swift
 
 ## Usage
-1. give this repo a star
-2. Add EBWeakifiable to your Project.
-3. simply after each closure add weakify like sample below:
-```
+1. give this repo a **Star** ⭐️
+2. Add `EBWeakifiable` to your Project.
+3. simply after each closure add `weakify` like sample below:
+``` swift
 producer.register(handler: weakify { strongSelf, result in
             strongSelf.handle(result)
  })
@@ -13,7 +13,7 @@ producer.register(handler: weakify { strongSelf, result in
 
 to show case the full ability here is a sampleCode of both producing and consuming:
 
-```
+``` swift
 class User: NSObject {
     
     private var handler: (Int) -> Void = { _ in }
